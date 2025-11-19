@@ -3,6 +3,11 @@
 #include <iostream>
 
 int main() {
-	std::cout << "시각화 부분";
+	Bucket b;
+	b.add(10);
+	std::cout << b.test<<'\n';
+
+	b.add(10);
+	std::cout << b.test;
 	return 0;
 }

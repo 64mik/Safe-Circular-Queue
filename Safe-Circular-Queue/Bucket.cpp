@@ -1,26 +1,31 @@
 #include "Bucket.h"
 #include <iostream>
-#include <vector>
 
+
+// ìƒì„±ì
 Bucket::Bucket() {
-	//»ı¼ºÀÚ ±¸Çö
+    test = 0;
 }
+
+// ì†Œë©¸ì
 Bucket::~Bucket() {
-	//¼Ò¸êÀÚ ±¸Çö
 }
+
+// ë°ì´í„° ì¶”ê°€
 void Bucket::add(int data) {
-	//µ¥ÀÌÅÍ Ãß°¡ ±¸Çö
-	test += data;
+    test += data;
 }
+
+// ë°ì´í„° ì¡°íšŒ
 int Bucket::get(int index) const {
-	//µ¥ÀÌÅÍ Á¶È¸ ±¸Çö
-	return 0; //ÀÓ½Ã ¹İÈ¯°ª
+    return test;
 }
+
+// ë²„í‚· í¬ê¸°
 int Bucket::size() const {
-	//¹öÅ¶ Å©±â ¹İÈ¯ ±¸Çö
-	return 0; //ÀÓ½Ã ¹İÈ¯°ª
+    return (test == 0) ? 0 : 1;
 }
 
 
-//¹öÅ¶ ±¸ÇöºÎ
-//¼öÁ¤
+//ï¿½ï¿½Å¶ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ï¿½ï¿½ï¿½ï¿½

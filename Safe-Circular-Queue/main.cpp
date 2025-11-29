@@ -4,10 +4,9 @@
 
 int main() {
 	Bucket b;
-	b.add(10);
-	std::cout << b.test<<'\n';
-
-	b.add(10);
-	std::cout << b.test;
+	for (int i = 0; i < 5; i++) {
+		b.add(10);
+		std::cout << b.test << '\n';
+	}
 	return 0;
 }

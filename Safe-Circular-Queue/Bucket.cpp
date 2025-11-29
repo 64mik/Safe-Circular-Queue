@@ -22,7 +22,7 @@ void Bucket::add(int value) {             // 데이터 추가
 
 int Bucket::get(int index) const {               // 데이터 조회
     if (index >= static_cast<int>(data.size()) || data[index] == nullptr) {
-        throw std::out_of_range
+		throw std::out_of_range("Index out of range or null pointer");
     }
     return *(data[index]);
 }
@@ -30,8 +30,3 @@ int Bucket::get(int index) const {               // 데이터 조회
 int Bucket::size() const {                           // 버킷 크기 반환
     return static_cast<int>(data.size());
 }
-
-
-
-//��Ŷ ������
-//����

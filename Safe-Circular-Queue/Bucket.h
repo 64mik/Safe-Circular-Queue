@@ -1,6 +1,14 @@
 #ifndef BUCKET_H
 #define BUCKET_T
+
+#include <vector>
+
+
 //��Ŷ �����
+private:
+	std::vector<int*> data;
+	int test = 0;
+
 class Bucket {
 	public:
 		Bucket();
@@ -10,6 +18,6 @@ class Bucket {
 		int get(int index) const;
 		int size() const;
 
-	int test = 0;
+
 };
 #endif // !BUCKET_H

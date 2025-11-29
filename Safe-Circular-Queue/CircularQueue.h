@@ -1,37 +1,41 @@
-#ifndef CIRCULAR_QUEUE_H
+ï»¿#ifndef CIRCULAR_QUEUE_H
 #define CIRCULAR_QUEUE_H
 
 #include <iostream>
-#include <cstdlib> // exit() ÇÔ¼ö¸¦ À§ÇØ
+#include <cstdlib>
 
-// Å¥ÀÇ ÃÖ´ë Å©±â Á¤ÀÇ (Å¬·¡½º ¿ÜºÎ¿¡ À§Ä¡)
-#define MAX_SIZE 5 
+// MAX_SIZE ìƒìˆ˜ë¥¼ ì œê±°í•©ë‹ˆë‹¤.
 
 class CircularQueue {
 private:
-    int items[MAX_SIZE]; // Å¥ ¿ä¼Ò¸¦ ÀúÀåÇÒ ¹è¿­
-    int front;           // Å¥ÀÇ Ã¹ ¹øÂ° ¿ä¼Ò ÀÎµ¦½º (»èÁ¦µÉ ¿ä¼Ò)
-    int rear;            // Å¥ÀÇ ¸¶Áö¸· ¿ä¼Ò ÀÎµ¦½º (»ğÀÔµÉ À§Ä¡)
+    int* items;      // í ìš”ì†Œë¥¼ ì €ì¥í•  ë™ì  ë°°ì—´ í¬ì¸í„°
+    int capacity;    // íì˜ ìµœëŒ€ í¬ê¸° (MAX_SIZE ì—­í• )
+    int front;
+    int rear;
 
-    // ³»ºÎ »óÅÂ È®ÀÎ ÇÔ¼ö
+    // ë‚´ë¶€ ìƒíƒœ í™•ì¸ í•¨ìˆ˜
     bool isFull();
     bool isEmpty();
 
-    // ¿À·ù Ã³¸® ÇÔ¼ö
-    void overflowError();   // °¡µæ Ã¡À» ¶§
-    void underflowError();  // ºñ¾î ÀÖÀ» ¶§
+    // ì˜¤ë¥˜ ì²˜ë¦¬ í•¨ìˆ˜
+    void overflowError();
+    void underflowError();
 
 public:
-    // »ı¼ºÀÚ
-    CircularQueue();
+    // ğŸ’¡ ìˆ˜ì •: í¬ê¸°ë¥¼ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ëŠ” ìƒì„±ì
+    CircularQueue(int max_size);
 
-    // ÁÖ¿ä Å¥ ¿¬»ê (»ğÀÔ/»èÁ¦ - Enqueue/Dequeue, Push/Pop¿¡ ÇØ´ç)
-    void enqueue(int element); // »ğÀÔ (Push)
-    int dequeue();             // »èÁ¦ (Pop)
+    // ğŸ’¡ ì¶”ê°€: ë™ì  ë©”ëª¨ë¦¬ í•´ì œë¥¼ ìœ„í•œ ì†Œë©¸ì
+    ~CircularQueue();
 
-    // »óÅÂ È®ÀÎ ¹× Á¢±Ù
-    int getFront(); // front °ª ¹İÈ¯
-    int getRear();  // rear °ª ¹İÈ¯
+    // ì£¼ìš” í ì—°ì‚°
+    void enqueue(int element);
+    int dequeue();
+
+    // ìƒíƒœ í™•ì¸ ë° ì ‘ê·¼
+    int getFront();
+    int getRear();
+    int getCapacity(); // íì˜ í¬ê¸° ë°˜í™˜
 };
 
 #endif // CIRCULAR_QUEUE_H

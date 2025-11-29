@@ -2,34 +2,22 @@
 #include <iostream>
 #include <cstdlib>
 
-// ----------------------------------------------------
-// 1. 생성자 정의 (매개변수 사용)
-// ----------------------------------------------------
 CircularQueue::CircularQueue(int max_size) {
     if (max_size <= 0) {
-        std::cerr << "🚨 오류: 큐 크기는 양수여야 합니다." << std::endl;
+        std::cerr << "오류: 큐 크기는 양수여야 합니다." << std::endl;
         exit(EXIT_FAILURE);
     }
-    // 💡 동적 메모리 할당
+    // 동적 메모리 할당
     items = new int[max_size];
     capacity = max_size; // 큐의 최대 크기 설정
     front = -1;
     rear = -1;
-    std::cout << "✅ 큐 생성 완료. 최대 크기: " << capacity << std::endl;
+    std::cout << "큐 생성 완료. 최대 크기: " << capacity << std::endl;
 }
-
-// ----------------------------------------------------
-// 2. 소멸자 정의 (메모리 해제)
-// ----------------------------------------------------
 CircularQueue::~CircularQueue() {
-    // 💡 동적 메모리 해제
     delete[] items;
-    std::cout << "✅ 큐 메모리 해제 완료." << std::endl;
+    std::cout << "큐 메모리 해제 완료." << std::endl;
 }
-
-// ----------------------------------------------------
-// 3. 상태 및 오류 처리 함수 정의 (MAX_SIZE 대신 capacity 사용)
-// ----------------------------------------------------
 
 bool CircularQueue::isFull() {
     // MAX_SIZE 대신 capacity 사용
@@ -41,41 +29,39 @@ bool CircularQueue::isEmpty() {
 }
 
 void CircularQueue::overflowError() {
-    std::cerr << "\n🚨 [ERROR] 큐가 가득 찼습니다 (Overflow). 프로그램을 강제 종료합니다." << std::endl;
-    exit(EXIT_FAILURE);
+    std::cerr << "\n[ERROR] (Overflow) 큐가 가득 찼습니다." << std::endl;
+    //exit(EXIT_FAILURE);
 }
 
 void CircularQueue::underflowError() {
-    std::cerr << "\n🚨 [ERROR] 큐가 비어 있습니다 (Underflow). 더 이상 삭제할 수 없습니다. 프로그램을 강제 종료합니다." << std::endl;
-    exit(EXIT_FAILURE);
+    std::cerr << "\n[ERROR] (Underflow) 큐가 비어 있습니다." << std::endl;
+    //exit(EXIT_FAILURE);
 }
 
-// ----------------------------------------------------
-// 4. 삽입 (Enqueue) 함수 정의 (capacity 사용)
-// ----------------------------------------------------
-void CircularQueue::enqueue(int element) {
+bool CircularQueue::enqueue(int& element) {
     if (isFull()) {
         overflowError();
+		status = "overflow";
+		return false;
     }
 
     if (isEmpty()) {
         front = 0;
     }
 
-    // rear 포인터를 모듈러 연산으로 증가 (capacity 사용)
+    // rear 포인터를 모듈러 연산으로 증가
     rear = (rear + 1) % capacity;
 
     items[rear] = element;
-    std::cout << "➕ 삽입: " << element << " (front: " << front << ", rear: " << rear << ")" << std::endl;
+    std::cout << "삽입: " << element << " (front: " << front << ", rear: " << rear << ")" << std::endl;
+	return true;
 }
 
-// ----------------------------------------------------
-// 5. 삭제 (Dequeue) 함수 정의 (capacity 사용)
-// ----------------------------------------------------
-int CircularQueue::dequeue() {
+bool CircularQueue::dequeue(int& output) {
     if (isEmpty()) {
         underflowError();
-        return -1;
+		status = "underflow";
+        return false;
     }
 
     int element = items[front];
@@ -89,13 +75,12 @@ int CircularQueue::dequeue() {
         front = (front + 1) % capacity;
     }
 
-    std::cout << "➖ 삭제: " << element << " (front: " << front << ", rear: " << rear << ")" << std::endl;
-    return element;
+    std::cout << "삭제: " << element << " (front: " << front << ", rear: " << rear << ")" << std::endl;
+	output = element;
+    return true;
 }
 
-// ----------------------------------------------------
-// 6. 디버깅 및 확인 함수 정의
-// ----------------------------------------------------
+// 디버깅 함수 구현
 int CircularQueue::getFront() {
     return front;
 }

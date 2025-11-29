@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <cstdlib>
-
+#include <string>
 // MAX_SIZE 상수를 제거합니다.
 
 class CircularQueue {
@@ -12,7 +12,7 @@ private:
     int capacity;    // 큐의 최대 크기 (MAX_SIZE 역할)
     int front;
     int rear;
-
+	std::string status = "normal"; // 큐 상태 변수 추가
     // 내부 상태 확인 함수
     bool isFull();
     bool isEmpty();
@@ -22,15 +22,13 @@ private:
     void underflowError();
 
 public:
-    // 💡 수정: 크기를 매개변수로 받는 생성자
-    CircularQueue(int max_size);
 
-    // 💡 추가: 동적 메모리 해제를 위한 소멸자
+    CircularQueue(int max_size=5);
     ~CircularQueue();
 
     // 주요 큐 연산
-    void enqueue(int element);
-    int dequeue();
+    bool enqueue(int& element);
+    bool dequeue(int& output);
 
     // 상태 확인 및 접근
     int getFront();

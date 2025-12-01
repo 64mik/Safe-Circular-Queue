@@ -1,5 +1,6 @@
 ﻿#include "CircularQueue.h" // CircularQueue 클래스를 사용하기 위해 필요
 #include "bucket.h"        // 기존 코드의 Bucket 클래스를 사용하기 위해 필요
+#include "QueueBucketConnector.h" // QueueBucketConnector 클래스를 사용하기 위해 필요
 #include <iostream>
 #include <cstdlib>         // exit() 함수를 위해
 

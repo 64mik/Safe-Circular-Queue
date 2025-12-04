@@ -15,56 +15,53 @@ QueueBucketConnector::~QueueBucketConnector() {
 
 bool QueueBucketConnector::enqueue(int value)
 {
-    bool ok = q->enqueue(value);
-
-    if (!ok) {
-        cout << "[Overflow] 큐가 가득 찼습니다. 버킷에 저장합니다. (값: "
-            << value << ")" << endl;
+    if (!q->enqueue(value)) {
+        cout << "[Overflow] 큐 Full → 버킷에 저장 (값:" << value << ")\n";
         b->add(value);
         return false;
     }
 
-    cout << "[Enqueue] 값 삽입: " << value << endl;
+    cout << "[Enqueue] " << value << endl;
     return true;
 }
 
 bool QueueBucketConnector::dequeue(int& output)
 {
-    bool ok = q->dequeue(output);
-
-    if (!ok) {
-        cout << "[Underflow] 큐가 비어 있습니다." << endl;
-
-        if (b->size() > 0) {
-            cout << "버킷에서 데이터를 큐로 복구합니다." << endl;
-
-            int v = b->get(0);     // vector[0]
-            b->removeFront();      // 삭제 (erase)
-
-            q->enqueue(v);
-            q->dequeue(output);
-
-            cout << "[Dequeue] 복구된 값: " << output << endl;
-            return true;
-        }
-
-        cout << "큐와 버킷 모두 비어 있습니다." << endl;
-        return false;
+    if (q->dequeue(output)) {
+        cout << "[Dequeue] " << output << endl;
+        return true;
     }
 
-    cout << "[Dequeue] 값 삭제: " << output << endl;
-    return true;
+    cout << "[Underflow] 큐 Empty" << endl;
+    recoverFromBucket();
+
+    if (q->dequeue(output)) {
+        cout << "[Dequeue-Recovered] " << output << endl;
+        return true;
+    }
+
+    cout << "큐 + 버킷 모두 비어있음\n";
+    return false;
+}
+
+void QueueBucketConnector::recoverFromBucket()
+{
+    if (b->size() == 0) return;
+
+    cout << "버킷 → 큐 데이터 이동" << endl;
+
+    int value;
+    b->get(value);       // 가장 앞 요소 얻기
+    b->removeFront();    // vector pop-front 구현 필요
+    q->enqueue(value);
 }
 
 void QueueBucketConnector::showStatus()
 {
-    cout << "\n=== 현재 상태 ===" << endl;
-
+    cout << "\n==== STATUS ====\n";
     cout << "큐 front: " << q->getFront()
         << ", rear: " << q->getRear() << endl;
-
     cout << "버킷 크기: " << b->size() << endl;
-
-    cout << "=================" << endl;
+    cout << "================\n";
 }
 

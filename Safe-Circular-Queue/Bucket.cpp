@@ -18,7 +18,7 @@ void Bucket::add(int& value) {   // 데이터 추가
     std::cout << "add: " << value << " | rear: " << rear << '\n';
 }
 
-void Bucket::get(int& output) {  // 데이터 조회(삭제X)
+void Bucket::get(int& output) {  // 데이터 조회
     if (current_size > 0) {
         output = data.at(front);
         std::cout << "get: " << output << " | front: " << front << '\n';

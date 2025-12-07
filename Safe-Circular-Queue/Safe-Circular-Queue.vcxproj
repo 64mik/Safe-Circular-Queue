@@ -127,11 +127,13 @@
     <ClCompile Include="CircularQueue.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="QueueBucketConnector.cpp" />
+    <ClCompile Include="Visualizer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bucket.h" />
     <ClInclude Include="CircularQueue.h" />
     <ClInclude Include="QueueBucketConnector.h" />
+    <ClInclude Include="Visualizer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

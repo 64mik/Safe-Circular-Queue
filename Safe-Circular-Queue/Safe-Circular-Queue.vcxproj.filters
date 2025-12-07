@@ -27,6 +27,9 @@
     <ClCompile Include="QueueBucketConnector.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Visualizer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CircularQueue.h">
@@ -36,6 +39,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="QueueBucketConnector.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Visualizer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

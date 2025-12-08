@@ -51,9 +51,9 @@ void QueueBucketConnector::recoverFromBucket()
     cout << "버킷 → 큐 데이터 이동" << endl;
 
     int value;
-    b->get(value);       // 가장 앞 요소 얻기
-    b->removeFront();    // vector pop-front 구현 필요
-    q->enqueue(value);
+    b->get(value);      // 값 읽기
+    b->removeFront();   // 삭제 (pop)
+    q->enqueue(value);  // 큐에 삽입
 }
 
 void QueueBucketConnector::showStatus()

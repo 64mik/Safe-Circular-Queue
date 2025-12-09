@@ -2,8 +2,10 @@
 #include "Visualizer.h"
 #include <iostream>
 #include <cstdlib>
+#include <string> // std::to_string 사용을 위해 추가
+
+
 CircularQueue::CircularQueue(int max_size) {
-    
     if (max_size <= 0) {
         Visualizer::getInstance().printErr("오류: 큐 크기는 양수여야 합니다.");
         exit(EXIT_FAILURE);
@@ -15,6 +17,7 @@ CircularQueue::CircularQueue(int max_size) {
     rear = -1;
     Visualizer::getInstance().print("큐 생성 완료. 최대 크기: " + std::to_string(capacity));
 }
+
 CircularQueue::~CircularQueue() {
     delete[] items;
     Visualizer::getInstance().print("큐 메모리 해제 완료.");
@@ -31,19 +34,17 @@ bool CircularQueue::isEmpty() {
 
 void CircularQueue::overflowError() {
     Visualizer::getInstance().printErr("(Overflow) 큐가 가득 찼습니다.");
-    //exit(EXIT_FAILURE);
 }
 
 void CircularQueue::underflowError() {
     Visualizer::getInstance().printErr("(Underflow) 큐가 비어 있습니다. //큐 포인터 초기화");
-    //exit(EXIT_FAILURE);
 }
 
 bool CircularQueue::enqueue(int& element) {
     if (isFull()) {
         overflowError();
-		status = "overflow";
-		return false;
+        // status = "overflow"; // status 멤버 변수가 없으므로 주석 처리
+        return false;
     }
 
     if (isEmpty()) {
@@ -55,13 +56,13 @@ bool CircularQueue::enqueue(int& element) {
     items[rear] = element;
     std::string msg = "삽입: " + std::to_string(element) + " (front: " + std::to_string(front) + ", rear: " + std::to_string(rear) + ")";
     Visualizer::getInstance().print(msg);
-	return true;
+    return true;
 }
 
 bool CircularQueue::dequeue(int& output) {
     if (isEmpty()) {
         underflowError();
-		status = "underflow";
+        // status = "underflow"; // status 멤버 변수가 없으므로 주석 처리
         return false;
     }
 
@@ -77,7 +78,7 @@ bool CircularQueue::dequeue(int& output) {
     }
     std::string msg = "삭제: " + std::to_string(element) + " (front: " + std::to_string(front) + ", rear: " + std::to_string(rear) + ")";
     Visualizer::getInstance().print(msg);
-	output = element;
+    output = element;
     return true;
 }
 

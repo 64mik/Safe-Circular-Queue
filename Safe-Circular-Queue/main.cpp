@@ -1,48 +1,62 @@
 ﻿#include "CircularQueue.h"
 #include "Visualizer.h"
+#include "QueueBucketConnector.h"
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <Windows.h>
 
+static void tempPrintStatus(Visualizer& v, Visualizer& v_b, CircularQueue* q, Bucket* b, int printX, int printY) {
+    v.print("(queue) 현재  front: " + std::to_string(q->getFront()) +
+        ", rear: " + std::to_string(q->getRear()) +
+        ", size(0 ~ n-1): " + std::to_string(q->getSize()) + "    ", printX, printY);
+    v.print("(bucket) 현재 front: " + std::to_string(b->getFront()) +
+        ", rear: " + std::to_string(b->getRear()) +
+        ", size(0 ~ n-1): " + std::to_string(b->getSize()) + "    ", printX, printY + 1);
+    v.update(q->getFront(), q->getRear());
+    v.render();
+    v_b.update(b->getFront(), b->getRear());
+    v_b.render();
+}
 
 int main() {
-    // 1. 큐 크기 설정 (Overflow를 확인하기 위해 배열 크기보다 작게 설정)
+    const int ARRAY_SIZE = 701;
     const int QUEUE_CAPACITY = 100;
-    CircularQueue myQueue(QUEUE_CAPACITY);
-
-    // 2. 0~1000까지 값을 가지는 배열 생성 및 초기화
-    const int ARRAY_SIZE = 1001;
     int data_array[ARRAY_SIZE];
+
+    int printX = 0;
+    int printY = 0;
+    int queueX = 0;
+    int queueY = 4;
+    int input = 0;
+    int output = 0;
+
+
+    CircularQueue* q =new CircularQueue(QUEUE_CAPACITY);
+    Bucket* b = new Bucket();
+    QueueBucketConnector myQueue(q, b,0,7);
+    Visualizer v(QUEUE_CAPACITY, queueX, queueY);       //큐 출력
+    Visualizer v_b(QUEUE_CAPACITY, queueX, queueY+2);   //백터 출력
+    
     for (int i = 0; i < ARRAY_SIZE; ++i) {
-        data_array[i] = i; // 인덱스만큼 값 배정
+        data_array[i] = i;
     }
 
-    Visualizer::getInstance().print("\n--- 배열 순회 및 큐 작업 시작 (0 ~ 1000) ---");
-
-    // 3. 배열 순회하며 삽입/삭제 결정
-    int output;
     for (int i = 0; i < ARRAY_SIZE; ++i) {
 
-        std::cout << "\n--- 인덱스: " << i << " (값: " << data_array[i] << ") 처리 ---" << std::endl;
+        v.print("--- 인덱스: " + std::to_string(i) + " (값: " + std::to_string(data_array[i]) + ") 처리 ---", printX, printY+3);
 
-        if (i % 2 == 0) { // 인덱스가 짝수일 때: 삽입 (enqueue)
-            Visualizer::getInstance().print("조건: 인덱스 " + std::to_string(i) + "는 짝수 -> 삽입 시도");
-            int element_to_enqueue = data_array[i];
-            myQueue.enqueue(element_to_enqueue);
+        if (!(i % 8 == 0)){
+            input = data_array[i];
+            myQueue.enqueue(input);   
         }
-        else { // 인덱스가 홀수일 때: 삭제 (dequeue)
-            Visualizer::getInstance().print("조건: 인덱스 " + std::to_string(i) + "는 홀수 -> 삭제 시도");
+        else 
             myQueue.dequeue(output);
-        }
-
-        // 큐의 상태를 간략하게 출력
-        Visualizer::getInstance().print("현재 front: " + std::to_string(myQueue.getFront()) +
-            ", rear: " + std::to_string(myQueue.getRear()) +
-            ", Capacity: " + std::to_string(myQueue.getCapacity()));
+        tempPrintStatus(v, v_b, q, b, printX, printY);
     }
 
-    Visualizer::getInstance().print("\n--- 모든 배열 요소 처리 완료 ---");
-
-    // 프로그램 종료
-    return 0;
+    Visualizer::getInstance().print("\n--- 모든 배열 요소 처리 완료 ---", printX, printY + 2);
+    while (myQueue.dequeue(output)) {
+        tempPrintStatus(v, v_b, q, b, printX, printY);
+    }
 }

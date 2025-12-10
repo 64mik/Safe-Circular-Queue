@@ -15,12 +15,10 @@ CircularQueue::CircularQueue(int max_size) {
     capacity = max_size; // 큐의 최대 크기 설정
     front = -1;
     rear = -1;
-    Visualizer::getInstance().print("큐 생성 완료. 최대 크기: " + std::to_string(capacity));
 }
 
 CircularQueue::~CircularQueue() {
     delete[] items;
-    Visualizer::getInstance().print("큐 메모리 해제 완료.");
 }
 
 bool CircularQueue::isFull() {
@@ -37,7 +35,7 @@ void CircularQueue::overflowError() {
 }
 
 void CircularQueue::underflowError() {
-    Visualizer::getInstance().printErr("(Underflow) 큐가 비어 있습니다. //큐 포인터 초기화");
+    Visualizer::getInstance().printErr("(Underflow) 큐가 비어 있습니다.");
 }
 
 bool CircularQueue::enqueue(int& element) {
@@ -54,8 +52,6 @@ bool CircularQueue::enqueue(int& element) {
     // rear 포인터를 모듈러 연산으로 증가
     rear = (rear + 1) % capacity;
     items[rear] = element;
-    std::string msg = "삽입: " + std::to_string(element) + " (front: " + std::to_string(front) + ", rear: " + std::to_string(rear) + ")";
-    Visualizer::getInstance().print(msg);
     return true;
 }
 
@@ -76,8 +72,6 @@ bool CircularQueue::dequeue(int& output) {
         // front 포인터를 모듈러 연산으로 증가 (capacity 사용)
         front = (front + 1) % capacity;
     }
-    std::string msg = "삭제: " + std::to_string(element) + " (front: " + std::to_string(front) + ", rear: " + std::to_string(rear) + ")";
-    Visualizer::getInstance().print(msg);
     output = element;
     return true;
 }
@@ -90,7 +84,10 @@ int CircularQueue::getFront() {
 int CircularQueue::getRear() {
     return rear;
 }
-
 int CircularQueue::getCapacity() {
     return capacity;
+}
+
+int CircularQueue::getSize() {
+    return (rear - front + capacity) % capacity - 1;
 }

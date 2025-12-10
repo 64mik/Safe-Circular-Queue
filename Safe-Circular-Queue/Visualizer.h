@@ -52,7 +52,7 @@ class Visualizer {
 		void render();
 		void setColor(char textColor, char bgColor = Color::Black);
 		void gotoXY(int x, int y);
-		void print(std::string message, char color=Color::White);
+		void print(std::string message, int x = -1, int y = -1, char color = Color::White);
 		void printErr(std::string errMsg);
 		
 };

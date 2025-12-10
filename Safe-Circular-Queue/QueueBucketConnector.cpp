@@ -1,67 +1,63 @@
 #include "QueueBucketConnector.h"
+#include "Visualizer.h"
+#include <stdlib.h>
 #include <iostream>
 
-using namespace std;
-
-QueueBucketConnector::QueueBucketConnector(int size) {
-    q = new CircularQueue(size);
-    b = new Bucket();
+QueueBucketConnector::QueueBucketConnector(CircularQueue* queue, Bucket* bucket, int x, int y) {
+    q = queue;
+    b = bucket;
+    printX = x;
+    printY = y;
+    if (!q || !b) {
+        Visualizer::getInstance().printErr("[Error] queue 혹은 bucket에 연결하는데 실패했습니다.");
+        exit(EXIT_FAILURE);
+    }
 }
 
 QueueBucketConnector::~QueueBucketConnector() {
-    delete q;
-    delete b;
 }
 
-bool QueueBucketConnector::enqueue(int value)
+bool QueueBucketConnector::enqueue(int& input)
 {
-    if (!q->enqueue(value)) {
-        cout << "[Overflow] 큐 Full → 버킷에 저장 (값:" << value << ")\n";
-        b->add(value);
-        return false;
+    if (q->enqueue(input)) {
+        Visualizer::getInstance().print("[Enqueue] " + std::to_string(input), printX, printY, Visualizer::getInstance().style.filledColor);
+        return true;
     }
+    else {
+        Visualizer::getInstance().print("[Overflow] 큐 Full → 버킷에 저장 (값:" + std::to_string(input), printX, printY + 2);
+        b->add(input);
+        Visualizer::getInstance().print("[Enqueue] " + std::to_string(input), printX, printY, Visualizer::getInstance().style.filledColor);
+        return false;
 
-    cout << "[Enqueue] " << value << endl;
-    return true;
+    }
 }
 
 bool QueueBucketConnector::dequeue(int& output)
 {
     if (q->dequeue(output)) {
-        cout << "[Dequeue] " << output << endl;
+        Visualizer::getInstance().print("[Dequeue] " + std::to_string(output) + "     ", printX, printY + 1, Visualizer::getInstance().style.emptyColor);
+        if (!(b->isEmpty()))
+            bucketToQueue();
         return true;
     }
-
-    cout << "[Underflow] 큐 Empty" << endl;
-    recoverFromBucket();
-
-    if (q->dequeue(output)) {
-        cout << "[Dequeue-Recovered] " << output << endl;
-        return true;
+    else {
+        return false;
     }
-
-    cout << "큐 + 버킷 모두 비어있음\n";
-    return false;
 }
-
-void QueueBucketConnector::recoverFromBucket()
-{
-    if (b->size() == 0) return;
-
-    cout << "버킷 → 큐 데이터 이동" << endl;
-
-    int value;
-    b->get(value);      // 값 읽기
-    b->removeFront();   // 삭제 (pop)
-    q->enqueue(value);  // 큐에 삽입
+int QueueBucketConnector::getFront(){
+    return q->getFront();
 }
-
-void QueueBucketConnector::showStatus()
-{
-    cout << "\n==== STATUS ====\n";
-    cout << "큐 front: " << q->getFront()
-        << ", rear: " << q->getRear() << endl;
-    cout << "버킷 크기: " << b->size() << endl;
-    cout << "================\n";
+int QueueBucketConnector::getRear(){
+    return q->getRear();
 }
-
+int QueueBucketConnector::getSize(){
+    return q->getSize();
+}
+void QueueBucketConnector::bucketToQueue() {
+        int value;
+        if(b->pop(value))
+            q->enqueue(value);
+        else {
+            Visualizer::getInstance().printErr("pop?");
+        }
+}

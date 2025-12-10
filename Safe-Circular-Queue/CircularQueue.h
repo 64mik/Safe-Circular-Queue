@@ -1,11 +1,8 @@
 ﻿#ifndef CIRCULAR_QUEUE_H
 #define CIRCULAR_QUEUE_H
-
 #include <iostream>
 #include <cstdlib>
 #include <string>
-// MAX_SIZE 상수를 제거합니다.
-
 class CircularQueue {
 private:
     int* items;      // 큐 요소를 저장할 동적 배열 포인터
@@ -34,6 +31,7 @@ public:
     int getFront();
     int getRear();
     int getCapacity(); // 큐의 크기 반환
+    int getSize();
 };
 
 #endif // CIRCULAR_QUEUE_H

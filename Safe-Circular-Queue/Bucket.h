@@ -8,18 +8,18 @@ public:
     Bucket();
     ~Bucket();
 
-    void add(int& input);  
-    void get(int& output); 
-
-    void removeFront();    // pop 기능
-    int size();            // 저장된 데이터 개수 반환
+    bool add(int& input);  
+    bool pop(int& output); 
+    int getFront();
+    int getRear();
+    int getSize();
     bool isEmpty();        // 버킷이 비어있는지 확인
 
 private:
     std::vector<int> data;
-    int front = 0;
-    int rear = 0;
-    int current_size = 0;
+    int front = -1;
+    int rear = -1;
+    int queueSize;
 };
 
 #endif

@@ -2,6 +2,7 @@
 #include "CircularQueue.h"
 #include <iostream>
 #include <Windows.h>
+
 Visualizer::Visualizer(int size, int x, int y) {
 	queueSize = size;
 	style.queueX = x;
@@ -19,45 +20,122 @@ void Visualizer::render() {
 	int rear = pointerIndex[REAR];
 	gotoXY(style.queueX, style.queueY);
 	std::cout << '[';
-	if (front == -1) {
+
+	//is Full
+	if (front == -1 && rear == -1){
 		setColor(style.emptyColor, Color::Black);
 		for (int i = 0; i < queueSize; i++)
 			std::cout << style.emptyChar;
 	}
+	//is Empty
 	else if (((rear + 1) % queueSize) == front) {
 		setColor(style.filledColor, Color::Black);
-		for (int i = 0; i < queueSize; i++)
+		for (int i = 0; i < queueSize; i++) {
+			if (i == front) {
+				setColor(Color::Cyan);
+				std::cout << ">";
+				continue;
+			}
+			else if (i == rear) {
+				setColor(Color::Red);
+				std::cout << "<";
+				continue;
+			}
+			setColor(style.filledColor);
 			std::cout << style.filledChar;
+			
+		}
 	}
+	//rendering
 	else {
 		for (int index = 0; index < queueSize; index++) {
 			gotoXY(style.queueX + index + 1, style.queueY);
 
-			if (front <= rear) {
-				if (index >= front && index <= rear){
-					setColor(style.filledColor);
-					std::cout << style.filledChar;
+			//bucket rendering
+			if (queueSize < rear) {
+				int f = (front + queueSize) % queueSize;
+				int r = (rear + queueSize) % queueSize;
+
+				if (index == f) {
+					setColor(Color::Cyan);
+					std::cout << ">";
+					continue;
 				}
-				else {
-					setColor(style.emptyColor);
-					std::cout << style.emptyChar;
+				else if (index == r) {
+					setColor(Color::Red);
+					std::cout << "<";
+					continue;
 				}
+
+				// > < 일 때
+				if (f <= r) {	
+					if (index >= f && index <= r) {
+						setColor(style.filledColor);
+						std::cout << style.filledChar;
+					}
+					else {
+						setColor(style.emptyColor);
+						std::cout << style.emptyChar;
+					}
+				}
+				// < > 일때
+				else {	
+					if (index >= f || index <= r) {
+						setColor(style.filledColor);
+						std::cout << style.filledChar;
+					}
+					else {
+						setColor(style.emptyColor);
+						std::cout << style.emptyChar;
+					}
+				}
+
+				setColor(style.defaultColor);
+				std::cout << "| *" << rear - front;
 			}
+			//normal rendering
 			else {
-				// 랩어라운드된 경우
-				if (index >= front || index <= rear){
-					setColor(style.filledColor);
-					std::cout << style.filledChar;
+				if (index == front) {
+					setColor(Color::Cyan);
+					std::cout << ">";
+					continue;
 				}
-				else{
-					setColor(style.emptyColor);
-					std::cout << style.emptyChar;
+				else if (index == rear) {
+					setColor(Color::Red);
+					std::cout << "<";
+					continue;
+				}
+				
+				// > < 일 때
+				if (front <= rear) {
+					if (index >= front && index <= rear) {
+						setColor(style.filledColor);
+						std::cout << style.filledChar;
+					}
+					else {
+						setColor(style.emptyColor);
+						std::cout << style.emptyChar;
+					}
+					continue;
+				}
+				// < > 일 때
+				else {
+					if (index >= front || index <= rear) {
+						setColor(style.filledColor);
+						std::cout << style.filledChar;
+					}
+					else {
+						setColor(style.emptyColor);
+						std::cout << style.emptyChar;
+					}
+					continue;
 				}
 			}
 		}
-	}	
+	}
+
 	setColor(style.defaultColor, Color::Black);
-	std::cout << ']';
+	std::cout << "]      ";
 	gotoXY(0, 0);
 }
 void Visualizer::gotoXY(int x, int y) {
@@ -69,9 +147,14 @@ void Visualizer::setColor(char textColor, char bgColor) {
 	WORD attributes = (bgColor << 4) | textColor;
 	SetConsoleTextAttribute(hConsole, attributes);
 }
-void Visualizer::print(std::string message, char color) {
-	gotoXY(style.outputX, style.outputY);
-	setColor(style.defaultColor);
+void Visualizer::print(std::string message, int x, int y, char color) {
+	if (x == -1 || y == -1) {
+		gotoXY(style.outputX, style.outputY);
+	}
+	else{
+		gotoXY(x, y);
+	}
+	setColor(color);
 	std::cout << message;
 }
 void Visualizer::printErr(std::string errMsg) {

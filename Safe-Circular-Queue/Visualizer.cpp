@@ -1,7 +1,7 @@
 #include "Visualizer.h"
 #include "CircularQueue.h"
 #include <iostream>
-#include <Windows.h>
+#include <windows.h>
 
 Visualizer::Visualizer(int size, int x, int y) {
 	queueSize = size;
@@ -9,6 +9,11 @@ Visualizer::Visualizer(int size, int x, int y) {
 	style.queueY = y;
 	pointerIndex[FRONT] = -1;
 	pointerIndex[REAR] = -1;
+
+	CONSOLE_CURSOR_INFO info;
+	info.dwSize = 1;
+	info.bVisible =	false;
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
 }
 Visualizer::~Visualizer(){}
 void Visualizer::update(int front, int rear) {
@@ -89,9 +94,6 @@ void Visualizer::render() {
 						std::cout << style.emptyChar;
 					}
 				}
-
-				setColor(style.defaultColor);
-				std::cout << "| *" << rear - front;
 			}
 			//normal rendering
 			else {
@@ -131,6 +133,10 @@ void Visualizer::render() {
 					continue;
 				}
 			}
+		}
+		if (queueSize < rear) {
+			setColor(style.defaultColor);
+			std::cout << "| *" << rear - front;
 		}
 	}
 

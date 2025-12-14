@@ -19,7 +19,6 @@ private:
     std::vector<int> data;
     int front = -1;
     int rear = -1;
-    int queueSize;
 };
 
 #endif

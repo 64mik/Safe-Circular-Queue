@@ -13,6 +13,7 @@ Bucket::~Bucket() {
 bool Bucket::add(int& value) {
     if (isEmpty()) {
         front = 0;
+        rear = 0;
     }
     rear++;
     data.push_back(value);
@@ -20,12 +21,15 @@ bool Bucket::add(int& value) {
 }
 
 bool Bucket::pop(int& output) {  // 데이터 조회
-    if (isEmpty()) {
+    if (data.empty()) {
         Visualizer::getInstance().printErr("Bucket is empty");
+        front = -1;
+        rear = -1;
         return false;
     }
+    output = data.front();
+    data.erase(data.begin());
     front++;
-    output = data.at(front);
     if (front == rear) {
         front = -1;
         rear = -1;   

@@ -46,7 +46,7 @@ int main() {
 
         v.print("--- 인덱스: " + std::to_string(i) + " (값: " + std::to_string(data_array[i]) + ") 처리 ---", printX, printY+3);
 
-        if (!(i % 8 == 0)){
+		if (!(i % 8 == 0)) { //i값이 나누어 떨어지지 않으면 삽입
             input = data_array[i];
             myQueue.enqueue(input);   
         }
